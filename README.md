@@ -1,2 +1,2 @@
-# akala-web
-Akala Web Project
+# akala-server
+Akala Server Project
