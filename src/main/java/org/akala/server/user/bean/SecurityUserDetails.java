@@ -7,7 +7,8 @@ import org.springframework.security.core.userdetails.User;
 
 public class SecurityUserDetails extends User {
 
-  public static final String USER_KEY_TYPE_SEP = "\\|";
+  public static final String USER_KEY_TYPE_SEP = "|";
+  public static final String USER_KEY_TYPE_SEP_REG = "\\|";
 
   private static final long serialVersionUID = 1L;
 

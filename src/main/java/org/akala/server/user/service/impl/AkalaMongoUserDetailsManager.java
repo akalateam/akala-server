@@ -17,6 +17,7 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -60,7 +61,7 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
     boolean userExists = userExists(user.getUsername());
     Assert.isTrue(!userExists, "User has been exists");
 
-    String[] tokens = user.getUsername().split(SecurityUserDetails.USER_KEY_TYPE_SEP);
+    String[] tokens = user.getUsername().split(SecurityUserDetails.USER_KEY_TYPE_SEP_REG);
     String key = tokens[0];
     String type = tokens[1];
 
@@ -74,7 +75,7 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
     SecurityUserDetails secUserDetails = (SecurityUserDetails) user;
     secUserDetails.setAkalaUser(akalaUser);
 
-    String[] tokens = user.getUsername().split(SecurityUserDetails.USER_KEY_TYPE_SEP);
+    String[] tokens = user.getUsername().split(SecurityUserDetails.USER_KEY_TYPE_SEP_REG);
     String key = tokens[0];
     String type = tokens[1];
     String pwd = new BCryptPasswordEncoder().encode(user.getPassword());
@@ -152,7 +153,7 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
   }
 
   private void updateAkalaUserPwd(SecurityUserDetails userDetails, String newPwd, String username) {
-    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP);
+    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP_REG);
     String key = tokens[0];
     String type = tokens[1];
 
@@ -195,7 +196,7 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
       return null;
     }
 
-    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP);
+    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP_REG);
     String key = tokens[0];
     String type = tokens[1];
     return akalaUserRepository.findByLoginsKeyAndLoginsType(key, type);
@@ -218,14 +219,14 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
       return null;
     }
 
-    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP);
+    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP_REG);
     String key = tokens[0];
     String type = tokens[1];
     return akalaUserRepository.findOneByLoginsKeyAndLoginsType(key, type);
   }
 
   private UserDetails createUserDetails(AkalaUser user, String username) {
-    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP);
+    String[] tokens = username.split(SecurityUserDetails.USER_KEY_TYPE_SEP_REG);
     String key = tokens[0];
     String type = tokens[1];
 
@@ -242,6 +243,19 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
         new SecurityUserDetails(username, thisLogin.getPwd(), new ArrayList<GrantedAuthority>());
     userDetails.setAkalaUser(user);
     return userDetails;
+  }
+
+  @Override
+  public boolean authUser(String userKey, String userType, String password) {
+    UsernamePasswordAuthenticationToken token =
+        new UsernamePasswordAuthenticationToken(userKey + SecurityUserDetails.USER_KEY_TYPE_SEP
+            + userType, password);
+    try {
+      authenticationManager.authenticate(token);
+      return true;
+    } catch (BadCredentialsException expected) {
+      return false;
+    }
   }
 
 }
