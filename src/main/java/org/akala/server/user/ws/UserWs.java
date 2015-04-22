@@ -29,18 +29,18 @@ public class UserWs {
       @QueryParam("userType") String userType, @QueryParam("password") String password) {
     return akalaUserDetailsManager.authUser(userKey, userType, password);
   }
-  
+
   @GET
   @Path("/signupUser")
   @Produces(MediaType.APPLICATION_JSON)
   public void signupUser(@QueryParam("userKey") String userKey,
       @QueryParam("userType") String userType, @QueryParam("password") String password) {
     UserDetails user =
-        new SecurityUserDetails(userKey + SecurityUserDetails.USER_KEY_TYPE_SEP
-            + userType, password, new ArrayList<GrantedAuthority>());
+        new SecurityUserDetails(userKey + SecurityUserDetails.USER_KEY_TYPE_SEP + userType,
+            password, new ArrayList<GrantedAuthority>());
     akalaUserDetailsManager.createUser(user);
   }
-  
+
   @GET
   @Path("/chekUserExist")
   @Produces(MediaType.APPLICATION_JSON)
