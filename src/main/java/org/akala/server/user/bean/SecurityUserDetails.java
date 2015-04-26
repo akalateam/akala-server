@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.User;
 
 public class SecurityUserDetails extends User {
 
+  public static final String USER_KEY_TYPE_PHONE = "Phone";
+  public static final String USER_KEY_TYPE_EMAIL = "Email";
   public static final String USER_KEY_TYPE_SEP = "|";
   public static final String USER_KEY_TYPE_SEP_REG = "\\|";
 
