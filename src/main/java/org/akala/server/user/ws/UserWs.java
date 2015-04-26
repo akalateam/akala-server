@@ -74,7 +74,8 @@ public class UserWs {
   @POST
   @Path("/resetPwd")
   @Produces(MediaType.APPLICATION_JSON)
-  public boolean resetPwd(@FormParam("userKey") String userKey, @FormParam("userType") String userType) {
+  public boolean resetPwd(@FormParam("userKey") String userKey,
+      @FormParam("userType") String userType) {
     return akalaUserDetailsManager.resetPwd(userKey, userType);
   }
 }
