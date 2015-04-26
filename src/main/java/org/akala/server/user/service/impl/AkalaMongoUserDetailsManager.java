@@ -1,20 +1,25 @@
 package org.akala.server.user.service.impl;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.akala.server.config.prop.EmailProp;
 import org.akala.server.user.bean.AkalaUser;
 import org.akala.server.user.bean.Basic;
 import org.akala.server.user.bean.Login;
 import org.akala.server.user.bean.SecurityUserDetails;
 import org.akala.server.user.repository.AkalaUserRepository;
 import org.akala.server.user.service.AkalaUserDetailsManager;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -39,6 +44,10 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
 
   private AkalaUserRepository akalaUserRepository;
 
+  private JavaMailSender sender;
+
+  private EmailProp emailProp;
+
   @Autowired
   public void setAuthenticationManager(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
@@ -47,6 +56,16 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
   @Autowired
   public void setAkalaUserRepository(AkalaUserRepository akalaUserRepository) {
     this.akalaUserRepository = akalaUserRepository;
+  }
+
+  @Autowired
+  public void setSender(JavaMailSender sender) {
+    this.sender = sender;
+  }
+
+  @Autowired
+  public void setEmailProp(EmailProp emailProp) {
+    this.emailProp = emailProp;
   }
 
   @Override
@@ -256,6 +275,33 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
     } catch (BadCredentialsException expected) {
       return false;
     }
+  }
+
+  @Override
+  public boolean resetPwd(String userKey, String userType) {
+    String newPwd = RandomStringUtils.randomAlphanumeric(6);
+    System.out.print(newPwd);
+    AkalaUser user = akalaUserRepository.findOneByLoginsKeyAndLoginsType(userKey, userType);
+    List<Login> logins = user.getLogins();
+    for (Login login : logins) {
+      if (login.getKey().equals(userKey) && login.getType().equals(userType)) {
+        login.setPwd(new BCryptPasswordEncoder().encode(newPwd));
+        akalaUserRepository.save(user);
+        if (Login.LOGIN_TYPE_PHONE.equals(userType)) {
+          // TODO send new pwd by mobile
+        } else if (Login.LOGIN_TYPE_EMAIL.equals(userType)) {
+          SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+          simpleMailMessage.setFrom(emailProp.getEmailFrom());
+          simpleMailMessage.setTo(userKey);
+          simpleMailMessage.setSubject(emailProp.getEmailResetpwdSubject());
+          simpleMailMessage.setText(MessageFormat.format(emailProp.getEmailResetpwdContent(),
+              newPwd));
+          sender.send(simpleMailMessage);
+        }
+        return true;
+      }
+    }
+    return false;
   }
 
 }

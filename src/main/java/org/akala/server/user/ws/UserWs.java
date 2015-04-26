@@ -26,7 +26,7 @@ public class UserWs {
 
   @Autowired
   private AkalaUserDetailsManager akalaUserDetailsManager;
-  
+
   @Resource(name = "akalaMobileService")
   private AkalaMobileService akalaMobileService;
 
@@ -42,12 +42,13 @@ public class UserWs {
   @Path("/signupUser")
   @Produces(MediaType.APPLICATION_FORM_URLENCODED)
   public void signupUser(@FormParam("userKey") String userKey,
-      @FormParam("userType") String userType,  @FormParam("password") String password, @FormParam("credentials") String credentials) {
+      @FormParam("userType") String userType, @FormParam("password") String password,
+      @FormParam("credentials") String credentials) {
     if (SecurityUserDetails.USER_KEY_TYPE_PHONE.equals(userType)) {
       boolean credentialsValid = akalaMobileService.validMobileCredentials(userKey, credentials);
       Assert.isTrue(credentialsValid, "Credentials is wrong");
-    }    
-    
+    }
+
     UserDetails user =
         new SecurityUserDetails(userKey + SecurityUserDetails.USER_KEY_TYPE_SEP + userType,
             password, new ArrayList<GrantedAuthority>());
@@ -62,11 +63,18 @@ public class UserWs {
     return akalaUserDetailsManager.userExists(userKey + SecurityUserDetails.USER_KEY_TYPE_SEP
         + userType);
   }
-  
+
   @POST
   @Path("/credentials")
   @Produces(MediaType.APPLICATION_FORM_URLENCODED)
   public String getMobileCredentials(@FormParam("mobile") String mobile) {
     return akalaMobileService.sendMobileCredentials(mobile);
+  }
+
+  @POST
+  @Path("/resetPwd")
+  @Produces(MediaType.APPLICATION_JSON)
+  public boolean resetPwd(@FormParam("userKey") String userKey, @FormParam("userType") String userType) {
+    return akalaUserDetailsManager.resetPwd(userKey, userType);
   }
 }
