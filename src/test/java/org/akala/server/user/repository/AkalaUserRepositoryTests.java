@@ -1,4 +1,4 @@
-package org.akala.server.repository;
+package org.akala.server.user.repository;
 
 import org.akala.server.AkalaApplicationTests;
 import org.akala.server.user.bean.AkalaUser;

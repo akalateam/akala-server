@@ -1,28 +1,20 @@
-package org.akala.server.eatery.bean;
+package org.akala.server.shop.bean;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
-public class AkalaEateryItem {
+public class AkalaShopItem {
 
   @Id
   private BigInteger id;
-  @DBRef
-  private AkalaEatery eatery;
+  private BigInteger eateryId;
   private float amount;
   private String name;
   private String desc;
-  private String fileId;
+  private String photoId;
   private String status;
-  private List<AkalaIngredient> ingredients;
-  
-  public AkalaEateryItem() {
-    setIngredients(new ArrayList<AkalaIngredient>());
-  }
+  private String category;
 
   public float getAmount() {
     return amount;
@@ -48,12 +40,12 @@ public class AkalaEateryItem {
     this.desc = desc;
   }
 
-  public String getFileId() {
-    return fileId;
+  public String getPhotoId() {
+    return photoId;
   }
-
-  public void setFileId(String fileId) {
-    this.fileId = fileId;
+  
+  public void setPhotoId(String photoId) {
+    this.photoId = photoId;
   }
 
   public String getStatus() {
@@ -64,13 +56,20 @@ public class AkalaEateryItem {
     this.status = status;
   }
 
-  public List<AkalaIngredient> getIngredients() {
-    return ingredients;
+  public BigInteger getEateryId() {
+    return eateryId;
   }
-
-  public void setIngredients(List<AkalaIngredient> ingredients) {
-    this.ingredients = ingredients;
+  
+  public void setEateryId(BigInteger eateryId) {
+    this.eateryId = eateryId;
   }
-
+  
+  public String getCategory() {
+    return category;
+  }
+  
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
 }

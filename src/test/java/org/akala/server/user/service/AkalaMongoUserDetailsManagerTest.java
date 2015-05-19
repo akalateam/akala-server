@@ -1,4 +1,4 @@
-package org.akala.server.service;
+package org.akala.server.user.service;
 
 import java.util.ArrayList;
 

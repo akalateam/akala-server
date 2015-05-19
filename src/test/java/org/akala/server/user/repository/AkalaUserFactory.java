@@ -1,4 +1,4 @@
-package org.akala.server.repository;
+package org.akala.server.user.repository;
 
 import java.util.ArrayList;
 import java.util.List;
