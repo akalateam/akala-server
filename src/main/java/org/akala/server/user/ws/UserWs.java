@@ -11,7 +11,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.akala.server.user.bean.AddressInfo;
 import org.akala.server.user.bean.SecurityUserDetails;
+import org.akala.server.user.service.AkalaAddressService;
 import org.akala.server.user.service.AkalaMobileService;
 import org.akala.server.user.service.AkalaUserDetailsManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class UserWs {
 
   @Resource(name = "akalaMobileService")
   private AkalaMobileService akalaMobileService;
+
+  @Resource(name = "akalaAddressService")
+  private AkalaAddressService akalaAddressService;
 
   @GET
   @Path("/authUser")
@@ -77,5 +82,13 @@ public class UserWs {
   public boolean resetPwd(@FormParam("userKey") String userKey,
       @FormParam("userType") String userType) {
     return akalaUserDetailsManager.resetPwd(userKey, userType);
+  }
+
+  @POST
+  @Path("/saveAddress")
+  @Produces(MediaType.APPLICATION_JSON)
+  public void saveAddress(@QueryParam("userKey") String userKey,
+      @QueryParam("userType") String userType, AddressInfo addressInfo) {
+    akalaAddressService.saveAddress(userKey, userType, addressInfo);
   }
 }

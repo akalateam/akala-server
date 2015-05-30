@@ -16,9 +16,11 @@ public class AkalaUser {
   private BigInteger id;
   private List<Login> logins;
   private Basic basic;
+  private List<AddressInfo> addressInfos;
 
   public AkalaUser() {
     logins = new ArrayList<Login>();
+    addressInfos = new ArrayList<AddressInfo>();
   }
 
   public BigInteger getId() {
@@ -43,6 +45,14 @@ public class AkalaUser {
 
   public void setBasic(Basic basic) {
     this.basic = basic;
+  }
+
+  public List<AddressInfo> getAddressInfos() {
+    return addressInfos;
+  }
+
+  public void setAddressInfos(List<AddressInfo> addressInfos) {
+    this.addressInfos = addressInfos;
   }
 
   @Override
