@@ -1,7 +1,5 @@
 package org.akala.server.user.bean;
 
-import java.math.BigInteger;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,18 +7,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class AddressInfo {
 
   @Id
-  private BigInteger id;
+  private String id;
   private String name;
   private String gender;
   private LocationInfo location;
   private String detailLocation;
   private String mobile;
 
-  public BigInteger getId() {
+  public String getId() {
     return id;
   }
-
-  public void setId(BigInteger id) {
+  
+  public void setId(String id) {
     this.id = id;
   }
 

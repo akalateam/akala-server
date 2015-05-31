@@ -1,21 +1,22 @@
 package org.akala.server.user.bean;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class AkalaUser {
 
   @Id
-  private BigInteger id;
+  private String id;
   private List<Login> logins;
   private Basic basic;
+  @DBRef
   private List<AddressInfo> addressInfos;
 
   public AkalaUser() {
@@ -23,11 +24,11 @@ public class AkalaUser {
     addressInfos = new ArrayList<AddressInfo>();
   }
 
-  public BigInteger getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(BigInteger id) {
+  public void setId(String id) {
     this.id = id;
   }
 

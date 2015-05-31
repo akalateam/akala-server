@@ -1,6 +1,7 @@
 package org.akala.server.user.ws;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ws.rs.FormParam;
@@ -90,5 +91,21 @@ public class UserWs {
   public void saveAddress(@QueryParam("userKey") String userKey,
       @QueryParam("userType") String userType, AddressInfo addressInfo) {
     akalaAddressService.saveAddress(userKey, userType, addressInfo);
+  }
+
+  @GET
+  @Path("/retrieveAddress")
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<AddressInfo> retrieveAddress(@QueryParam("userKey") String userKey,
+      @QueryParam("userType") String userType) {
+    return akalaAddressService.getAddress(userKey, userType);
+  }
+
+  @GET
+  @Path("/deleteAddress")
+  @Produces(MediaType.APPLICATION_JSON)
+  public void deleteAddress(@QueryParam("userKey") String userKey,
+      @QueryParam("userType") String userType, @QueryParam("addressId") String addressId) {
+    akalaAddressService.deleteAddress(userKey, userType, addressId);
   }
 }
