@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.akala.server.AkalaApplicationTests;
 import org.akala.server.shop.bean.AkalaShop;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+@Ignore
 public class AkalaShopRepositoryTests extends AkalaApplicationTests {
   
   @Autowired
