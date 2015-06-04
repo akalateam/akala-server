@@ -8,7 +8,7 @@ public class AkalaShopItem {
 
   @Id
   private BigInteger id;
-  private BigInteger eateryId;
+  private BigInteger shopId;
   private float amount;
   private String name;
   private String desc;
@@ -56,12 +56,12 @@ public class AkalaShopItem {
     this.status = status;
   }
 
-  public BigInteger getEateryId() {
-    return eateryId;
+  public BigInteger getShopId() {
+    return shopId;
   }
   
-  public void setEateryId(BigInteger eateryId) {
-    this.eateryId = eateryId;
+  public void setShopId(BigInteger shopId) {
+    this.shopId = shopId;
   }
   
   public String getCategory() {
