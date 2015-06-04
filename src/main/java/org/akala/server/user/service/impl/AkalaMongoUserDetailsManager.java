@@ -58,7 +58,7 @@ public class AkalaMongoUserDetailsManager implements AkalaUserDetailsManager {
     this.akalaUserRepository = akalaUserRepository;
   }
 
-  @Autowired
+  //@Autowired
   public void setSender(JavaMailSender sender) {
     this.sender = sender;
   }

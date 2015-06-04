@@ -8,10 +8,12 @@ import org.akala.server.AkalaApplicationTests;
 import org.akala.server.shop.bean.AkalaShop;
 import org.akala.server.shop.service.AkalaImageService;
 import org.akala.server.shop.service.AkalaShopService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+@Ignore
 public class AkalaShopRepositoryTests extends AkalaApplicationTests {
   
   @Autowired
