@@ -2,7 +2,10 @@ package org.akala.server.user.service.impl;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.akala.server.user.service.AkalaMobileService;
+import org.akala.server.utils.AkalaSmsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.mina.util.ExpiringMap;
 import org.springframework.stereotype.Service;
@@ -11,9 +14,13 @@ import org.springframework.stereotype.Service;
 public class AkalaMobileServiceImpl implements AkalaMobileService {
   
   private static Map<String, String> credentialsMap = new ExpiringMap<String, String>(60, 1);
+  
+  @Resource(name="akalaSmsYunpianService")
+  private AkalaSmsService akalaSmsYunpianService;
 
   public String sendMobileCredentials(String mobile) {
     String credentials = generateCredentials();
+    akalaSmsYunpianService.sendCredentialText(mobile, credentials);
     credentialsMap.put(mobile, credentials);
     return credentials;
   }
