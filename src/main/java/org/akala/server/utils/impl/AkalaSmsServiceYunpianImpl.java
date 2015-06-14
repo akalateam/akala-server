@@ -64,9 +64,9 @@ public class AkalaSmsServiceYunpianImpl implements AkalaSmsService {
       JSONParser parser = new JSONParser();
       try {
         JSONObject jsonObj =  (JSONObject)parser.parse(result);
-        Long code = (Long)jsonObj.get("code");
-        String msg = (String)jsonObj.get("msg");
-        if (code.equals(0l)){
+        String code = jsonObj.get("code").toString();
+        String msg = jsonObj.get("msg").toString();
+        if (code.equals("0")){
           status = true;
         }else {
           logger.info("Sending Credential Failed with Code [" + code + "] Msg [" + msg + "]");
