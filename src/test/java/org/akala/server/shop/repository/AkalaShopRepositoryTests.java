@@ -1,61 +1,62 @@
 package org.akala.server.shop.repository;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import org.akala.server.AkalaApplicationTests;
 import org.akala.server.shop.bean.AkalaShop;
 import org.akala.server.shop.service.AkalaImageService;
 import org.akala.server.shop.service.AkalaShopService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.util.Assert;
 
-@Ignore
 public class AkalaShopRepositoryTests extends AkalaApplicationTests {
-  
+
   @Autowired
   private AkalaShopRepository akalaShopRepository;
-  
+
   @Autowired
   private AkalaShopService akalaShopService;
-  
+
   @Autowired
   private AkalaImageService akalaImageService;
-  
+
   @Test
   public void testSave() {
     AkalaShop shePing = AkalaShopFactory.genAkalaShePing();
     try {
-      shePing.setPhotoId(akalaImageService.storeImage(new FileInputStream("E:/workspace/images/sheping.jpg"), "ShePing", "image/png"));
-    } catch (FileNotFoundException e) {
+      shePing.setPhotoId(akalaImageService.storeImage(
+          (new ClassPathResource("images/蛇平.jpg")).getInputStream(), "ShePing", "image/png"));
+    } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
     akalaShopRepository.save(shePing);
-    
+
     AkalaShop daShiPu = AkalaShopFactory.genAkalaShopDaShiPu();
     try {
-      daShiPu.setPhotoId(akalaImageService.storeImage(new FileInputStream("E:/workspace/images/dashipu.jpg"), "DaShiPu", "image/png"));
-    } catch (FileNotFoundException e) {
+      daShiPu.setPhotoId(akalaImageService.storeImage(
+          (new ClassPathResource("images/大石浦.jpg")).getInputStream(), "DaShiPu", "image/png"));
+    } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
     akalaShopRepository.save(daShiPu);
-    
+
     AkalaShop heJi = AkalaShopFactory.genAkalaShopHeJi();
     try {
-      heJi.setPhotoId(akalaImageService.storeImage(new FileInputStream("E:/workspace/images/heji.jpg"), "HeJi", "image/png"));
-    } catch (FileNotFoundException e) {
+      heJi.setPhotoId(akalaImageService.storeImage(
+          (new ClassPathResource("images/和记.jpg")).getInputStream(), "HeJi", "image/png"));
+    } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
     akalaShopRepository.save(heJi);
   }
-  
+
   @Test
   public void testFindByCoordinateLongitudeAndCoordinateLatitude() {
     //horizon
