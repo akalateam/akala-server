@@ -19,6 +19,8 @@ import org.akala.server.shop.bean.AkalaShopItem;
 import org.akala.server.shop.service.AkalaImageService;
 import org.akala.server.shop.service.AkalaShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -37,7 +39,7 @@ public class ShopWs {
   @GET
   @Path("/shopList")
   @Produces(MediaType.APPLICATION_JSON)
-  public List<AkalaShop> getAkalaShops(@QueryParam("longitude") float longitude, @QueryParam("latitude") float latitude) {
+  public List<GeoResult<AkalaShop>> getAkalaShops(@QueryParam("longitude") float longitude, @QueryParam("latitude") float latitude) {
     return akalaShopService.findAkalaShopList(longitude, latitude);
   }
 

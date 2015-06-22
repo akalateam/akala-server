@@ -11,6 +11,7 @@ import org.akala.server.shop.service.AkalaShopService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.GeoResult;
 import org.springframework.util.Assert;
 
 @Ignore
@@ -59,16 +60,16 @@ public class AkalaShopRepositoryTests extends AkalaApplicationTests {
   public void testFindByCoordinateLongitudeAndCoordinateLatitude() {
     //horizon
 //    List<AkalaShop> horizonShopList = akalaShopRepository.findByCoordinateLongitudeAndCoordinateLatitude(113.591144f, 22.367448f);
-    List<AkalaShop> horizonShopList = akalaShopService.findAkalaShopList(113.591144f, 22.367448f);
+    List<GeoResult<AkalaShop>> horizonShopList = akalaShopService.findAkalaShopList(113.591144f, 22.367448f);
     Assert.notEmpty(horizonShopList);
-    Assert.isTrue(AkalaShopFactory.genAkalaShopDaShiPu().getName().equals(horizonShopList.get(0).getName()));
+    Assert.isTrue(AkalaShopFactory.genAkalaShopDaShiPu().getName().equals(horizonShopList.get(0).getContent().getName()));
     
     //Sun Yat-sen University
 //    Point point = new Point(113.588899f, 22.34799f); 
 //    List<AkalaShop> universityShopList = akalaShopRepository.findByCoordinateNear(point);
-    List<AkalaShop> universityShopList = akalaShopService.findAkalaShopList(113.588899f, 22.34799f);
+    List<GeoResult<AkalaShop>> universityShopList = akalaShopService.findAkalaShopList(113.588899f, 22.34799f);
     Assert.notEmpty(universityShopList);
-    Assert.isTrue(AkalaShopFactory.genAkalaShePing().getName().equals(universityShopList.get(0).getName()));
+    Assert.isTrue(AkalaShopFactory.genAkalaShePing().getName().equals(universityShopList.get(0).getContent().getName()));
   }
   
 
